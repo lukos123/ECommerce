@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Documentation</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        color: #333;
+      }
+      html {
+      }
+      header {
+        background-color: #007bff;
+        /*     position:fixed; */
+        color: #fff;
+        padding: 1rem;
+        text-align: center;
+      }
+
+      nav {
+        background-color: #343a40;
+        color: #fff;
+        padding: 1rem;
+        width: 250px;
+        position: fixed;
+        overflow: auto;
+        height: 80vh;
+      }
+
+      nav ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      nav ul li {
+        margin-bottom: 1rem;
+      }
+
+      nav ul li a {
+        color: #fff;
+        text-decoration: none;
+      }
+
+      nav ul li ul {
+        list-style: none;
+        padding-left: 1rem;
+        margin-top: 0.5rem;
+      }
+
+      nav ul li ul li {
+        margin-bottom: 0.5rem;
+      }
+
+      main {
+        margin-left: 270px;
+        overflow-y: scroll;
+        height: 80vh;
+
+        padding: 1rem;
+        scroll-behavior: smooth;
+        background-color: #fff;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        margin-top: 0;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+      }
+
+      h2 {
+        font-size: 2rem;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+      }
+
+      h3 {
+        font-size: 1.5rem;
+        margin-top: 1rem;
+        color: #007bff;
+      }
+
+      h4 {
+        font-size: 1.25rem;
+        margin-top: 1rem;
+      }
+
+      pre {
+        background-color: #f4f4f4;
+        padding: 1rem;
+        border-left: 5px solid #007bff;
+        overflow: auto;
+      }
+
+      code {
+        font-family: Consolas, "Courier New", Courier, monospace;
+        background-color: #e9ecef;
+        display: inline-block;
+        padding: 0.2rem 0.4rem;
+        border-radius: 0.25rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>API Documentation</h1>
+    </header>
+    <nav>
+      <ul>
+        <li>
+          <a href="/documentation/types">types</a>
+        </li>
+        <li>
+          <a href="#auth">Auth</a>
+          <ul>
+            <li><a href="#post-authregister">POST /auth/register</a></li>
+            <li><a href="#post-authlogin">POST /auth/login</a></li>
+            <li><a href="#post-authrefresh">POST /auth/refresh</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#users">Users</a>
+          <ul>
+            <li><a href="#get-users">GET /users</a></li>
+            <li><a href="#get-usersmain">GET /users/main</a></li>
+            <li><a href="#put-usersmain">PUT /users/main</a></li>
+            <li><a href="#get-usersintid">GET /users/&lt;int:id&gt;</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#cart">Cart</a>
+          <ul>
+            <li><a href="#get-cart">GET /cart</a></li>
+            <li><a href="#get-cartmain">GET /cart/main</a></li>
+            <li><a href="#post-cart">POST /cart</a></li>
+            <li><a href="#put-cartintid">PUT /cart/&lt;int:id&gt;</a></li>
+            <li><a href="#delete-cartintid">DELETE /cart/&lt;int:id&gt;</a></li>
+            <li><a href="#post-cartorder">POST /cart/order</a></li>
+            <li><a href="#get-cartorderall">GET /cart/order/all</a></li>
+            <li>
+              <a href="#get-cartorderintid">GET /cart/order/&lt;int:id&gt;</a>
+            </li>
+            <li>
+              <a href="#post-cartorderfinishclient"
+                >POST /cart/order/finish/client</a
+              >
+            </li>
+            <li>
+              <a href="#post-cartorderfinishsupplier"
+                >POST /cart/order/finish/supplier</a
+              >
+            </li>
+            <li>
+              <a href="#post-cartorderconfirm">POST /cart/order/confirm</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#notification">Notification</a>
+          <ul>
+            <li><a href="#get-notification">GET /notification</a></li>
+            <li><a href="#get-made-notification">GET /notification/made</a></li>
+            <li>
+              <a href="#get-not-made-notification"
+                >GET /notification/not_made</a
+              >
+            </li>
+            <li><a href="#get-sent-notification">GET /notification/sent</a></li>
+            <li>
+              <a href="#get-not-sent-notification"
+                >GET /notification/not_sent</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#products">Products</a>
+          <ul>
+            <li><a href="#get-products">GET /products</a></li>
+            <li>
+              <a href="#get-productsintid">GET /products/&lt;int:id&gt;</a>
+            </li>
+            <li>
+              <a href="#get-productsintidcomments"
+                >GET /products/&lt;int:id&gt;/comments</a
+              >
+            </li>
+            <li>
+              <a href="#post-productsintidcomments"
+                >POST /products/&lt;int:id&gt;/comments</a
+              >
+            </li>
+            <li><a href="#post-products">POST /products</a></li>
+            <li>
+              <a href="#put-productsintid">PUT /products/&lt;int:id&gt;</a>
+            </li>
+            <li>
+              <a href="#delete-productsintid"
+                >DELETE /products/&lt;int:id&gt;</a
+              >
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+    <main>
+      <section id="auth">
+        <h2>Auth</h2>
+        <article id="post-authregister">
+          <h3>POST /auth/register</h3>
+          <p>Registers a new user.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/auth/register</code></p>
+          <p><strong>Method:</strong> <code>POST</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "username": "string",
+    "email": "string",
+    "password": "string"
+}</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>201 Created</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "access_token": "access_token",
+    "refresh_token": "refresh_token"
+}</code></pre>
+        </article>
+        <article id="post-authlogin">
+          <h3>POST /auth/login</h3>
+          <p>Logs in a user.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/auth/login</code></p>
+          <p><strong>Method:</strong> <code>POST</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "username": "string", // or email
+    "password": "string"
+}</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "access_token": "access_token",
+    "refresh_token": "refresh_token"
+}</code></pre>
+        </article>
+        <article id="post-authrefresh">
+          <h3>POST /auth/refresh</h3>
+          <p>Refreshes the access token.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/auth/refresh</code></p>
+          <p><strong>Method:</strong> <code>POST</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer refresh_token</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "access_token": "access_token"
+}</code></pre>
+        </article>
+      </section>
+      <section id="users">
+        <h2>Users</h2>
+        <article id="get-users">
+          <h3>GET /users</h3>
+          <p>Fetches all user profiles.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/users</code></p>
+          <p><strong>Method:</strong> <code>GET</code></p>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>[
+    {
+        "id": int,
+        "username": str,
+        "description": str,
+        "products": [...],
+        "comments": [...],
+        "orders": [...],
+        "cart_item_groups": [...],
+        "notifications": [...]
+    },
+    ...
+]</code></pre>
+        </article>
+        <article id="get-usersmain">
+          <h3>GET /users/main</h3>
+          <p>Fetches the authenticated user's details.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/users/main</code></p>
+          <p><strong>Method:</strong> <code>GET</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "id": int,
+    "username": str,
+    "description": str,
+    "email": str,
+    "products": [...],
+    "comments": [...],
+    "orders": [...],
+    "cart_item_groups": [...],
+    "notifications": [...]
+}</code></pre>
+        </article>
+        <article id="put-usersmain">
+          <h3>PUT /users/main</h3>
+          <p>Updates the authenticated user's details.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/users/main</code></p>
+          <p><strong>Method:</strong> <code>PUT</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "username": "string",
+    "email": "string",
+    "password": "string",
+    "description": "string"
+}</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "id": int,
+    "username": str,
+    "description": str,
+    "email": str,
+    "products": [...],
+    "comments": [...],
+    "orders": [...],
+    "cart_item_groups": [...],
+    "notifications": [...]
+}</code></pre>
+        </article>
+        <article id="get-usersintid">
+          <h3>GET /users/&lt;int:id&gt;</h3>
+          <p>Fetches a user's profile by ID.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/users/&lt;int:id&gt;</code></p>
+          <p><strong>Method:</strong> <code>GET</code></p>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "id": int,
+    "username": str,
+    "description": str,
+    "products": [...]
+}</code></pre>
+        </article>
+      </section>
+      <section id="cart">
+        <h2>Cart</h2>
+        <article id="get-cart">
+          <h3>GET /cart</h3>
+          <p>Fetches all cart items for the authenticated user.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/cart</code></p>
+          <p><strong>Method:</strong> <code>GET</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>[
+    {
+        "id": int,
+        "cart_items": [...],
+        "user_id": int,
+        "main": bool
+    },
+    ...
+]</code></pre>
+        </article>
+        <article id="get-cartmain">
+          <h3>GET /cart/main</h3>
+          <p>Fetches the main cart for the authenticated user.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/cart/main</code></p>
+          <p><strong>Method:</strong> <code>GET</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "id": int,
+    "cart_items": [...],
+    "user_id": int,
+    "main": bool
+}</code></pre>
+        </article>
+        <article id="post-cart">
+          <h3>POST /cart</h3>
+          <p>Adds a product to the main cart.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/cart</code></p>
+          <p><strong>Method:</strong> <code>POST</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "product_id": int,
+    "quantity": int
+}</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>201 Created</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "id": int,
+    "cart_group_id": int,
+    "product_id": int,
+    "product": {...},
+    "name": str,
+    "quantity": int
+}</code></pre>
+        </article>
+        <article id="put-cartintid">
+          <h3>PUT /cart/&lt;int:id&gt;</h3>
+          <p>Updates a cart item quantity.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/cart/&lt;int:id&gt;</code></p>
+          <p><strong>Method:</strong> <code>PUT</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "quantity": int
+}</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "id": int,
+    "cart_group_id": int,
+    "product_id": int,
+    "product": {...},
+    "name": str,
+    "quantity": int
+}</code></pre>
+        </article>
+        <article id="delete-cartintid">
+          <h3>DELETE /cart/&lt;int:id&gt;</h3>
+          <p>Deletes a cart item.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/cart/&lt;int:id&gt;</code></p>
+          <p><strong>Method:</strong> <code>DELETE</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "message": "Cart item deleted"
+}</code></pre>
+        </article>
+        <article id="post-cartorder">
+          <h3>POST /cart/order</h3>
+          <p>Starts an order for the current cart.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/cart/order</code></p>
+          <p><strong>Method:</strong> <code>POST</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "message": "Start order"
+}</code></pre>
+        </article>
+        <article id="get-cartorderall">
+          <h3>GET /cart/order/all</h3>
+          <p>Fetches all orders for the authenticated user.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/cart/order/all</code></p>
+          <p><strong>Method:</strong> <code>GET</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>[
+    {
+        "id": int,
+        "user_id": int,
+        "delivery": str,
+        "delivery_to": str | None,
+        "status": str,
+        "cart_item_group_id": int,
+        "cart_group": {...}
+    },
+    ...
+]</code></pre>
+        </article>
+        <article id="get-cartorderintid">
+          <h3>GET /cart/order/&lt;int:id&gt;</h3>
+          <p>Fetches an order by ID for the authenticated user.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/cart/order/&lt;int:id&gt;</code></p>
+          <p><strong>Method:</strong> <code>GET</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "id": int,
+    "user_id": int,
+    "delivery": str,
+    "delivery_to": str | None,
+    "status": str,
+    "cart_item_group_id": int,
+    "cart_group": {...}
+}</code></pre>
+        </article>
+        <article id="post-cartorderfinishclient">
+          <h3>POST /cart/order/finish/client</h3>
+          <p>Marks an order as finished by the client.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/cart/order/finish/client</code></p>
+          <p><strong>Method:</strong> <code>POST</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "order_id": int,
+    "delivery": "string",
+    "delivery_to": "string"
+}</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "message": "Finish order"
+}</code></pre>
+        </article>
+        <article id="post-cartorderfinishsupplier">
+          <h3>POST /cart/order/finish/supplier</h3>
+          <p>Marks an order as finished by the supplier.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/cart/order/finish/supplier</code></p>
+          <p><strong>Method:</strong> <code>POST</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "order_id": int
+}</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "message": "Finish order"
+}</code></pre>
+        </article>
+        <article id="post-cartorderconfirm">
+          <h3>POST /cart/order/confirm</h3>
+          <p>Confirms an order item.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/cart/order/confirm</code></p>
+          <p><strong>Method:</strong> <code>POST</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "order_id": int,
+    "item_id": int | None
+}</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "message": "Confirm order"
+}</code></pre>
+        </article>
+      </section>
+      <section id="notification">
+        <h2>Notification</h2>
+        <article id="get-notification">
+          <h3>GET /notification</h3>
+          <p>Fetches all notification for the authenticated user.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/notification</code></p>
+          <p><strong>Method:</strong> <code>GET</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>[
+    {
+        "id": int,
+        "supplier_id": int,
+        "order_id": int,
+        "order": {...}
+    },
+    ...
+]</code></pre>
+        </article>
+        <article id="get-made-notification">
+          <h3>GET /notification/made</h3>
+          <p>Fetches all made notification for the authenticated user.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/notification/made</code></p>
+          <p><strong>Method:</strong> <code>GET</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>[
+      {
+          "id": int,
+          "supplier_id": int,
+          "order_id": int,
+          "order": {...}
+      },
+      ...
+  ]</code></pre>
+        </article>
+        <article id="get-not-made-notification">
+          <h3>GET /notification/not_made</h3>
+          <p>Fetches all not made notification for the authenticated user.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/notification/not_made</code></p>
+          <p><strong>Method:</strong> <code>GET</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>[
+        {
+            "id": int,
+            "supplier_id": int,
+            "order_id": int,
+            "order": {...}
+        },
+        ...
+    ]</code></pre>
+        </article>
+        <article id="get-sent-notification">
+          <h3>GET /notification/sent</h3>
+          <p>Fetches all sent notification for the authenticated user.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/notification/sent</code></p>
+          <p><strong>Method:</strong> <code>GET</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>[
+        {
+            "id": int,
+            "supplier_id": int,
+            "order_id": int,
+            "order": {...}
+        },
+        ...
+    ]</code></pre>
+        </article>
+        <article id="get-not-sent-notification">
+          <h3>GET /notification/not_sent</h3>
+          <p>Fetches all not sent notification for the authenticated user.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/notification/not_sent</code></p>
+          <p><strong>Method:</strong> <code>GET</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>[
+        {
+            "id": int,
+            "supplier_id": int,
+            "order_id": int,
+            "order": {...}
+        },
+        ...
+    ]</code></pre>
+        </article>
+      </section>
+      <section id="products">
+        <h2>Products</h2>
+        <article id="get-products">
+          <h3>GET /products</h3>
+          <p>Fetches all products.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/products</code></p>
+          <p><strong>Method:</strong> <code>GET</code></p>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>[
+    {
+        "id": int,
+        "user_id": int,
+        "name": str,
+        "price": float,
+        "description": str,
+        "created_at": str,
+        "image": str | ""
+    },
+    ...
+]</code></pre>
+        </article>
+        <article id="get-productsintid">
+          <h3>GET /products/&lt;int:id&gt;</h3>
+          <p>Fetches a product by ID.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/products/&lt;int:id&gt;</code></p>
+          <p><strong>Method:</strong> <code>GET</code></p>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "id": int,
+    "user_id": int,
+    "name": str,
+    "price": float,
+    "description": str,
+    "created_at": str,
+    "image": str | ""
+}</code></pre>
+        </article>
+        <article id="get-productsintidcomments">
+          <h3>GET /products/&lt;int:id&gt;/comments</h3>
+          <p>Fetches comments for a product by ID.</p>
+          <h4>Request</h4>
+          <p>
+            <strong>URL:</strong> <code>/products/&lt;int:id&gt;/comments</code>
+          </p>
+          <p><strong>Method:</strong> <code>GET</code></p>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>[
+        {
+            "id": int,
+            "user": str,
+            "user_id": int,
+            "product_id": int,
+            "text": str,
+            "created_at": str
+        },
+        ...
+    ]</code>
+</pre>
+        </article>
+        <article id="post-productsintidcomments">
+          <h3>POST /products/&lt;int:id&gt;/comments</h3>
+          <p>Adds a comment to a product.</p>
+          <h4>Request</h4>
+          <p>
+            <strong>URL:</strong> <code>/products/&lt;int:id&gt;/comments</code>
+          </p>
+          <p><strong>Method:</strong> <code>POST</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "text": "string"
+}</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "id": int,
+    "user": str,
+    "user_id": int,
+    "product_id": int,
+    "text": str,
+    "created_at": str
+}</code></pre>
+        </article>
+        <article id="post-products">
+          <h3>POST /products</h3>
+          <p>Adds a new product.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/products</code></p>
+          <p><strong>Method:</strong> <code>POST</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "name": "string",
+    "price": float,
+    "description": "string"
+}</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>201 Created</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "id": int,
+    "user_id": int,
+    "name": str,
+    "price": float,
+    "description": str,
+    "created_at": str,
+    "image": str | ""
+}</code></pre>
+        </article>
+        <article id="put-productsintid">
+          <h3>PUT /products/&lt;int:id&gt;</h3>
+          <p>Updates a product by ID.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/products/&lt;int:id&gt;</code></p>
+          <p><strong>Method:</strong> <code>PUT</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "name": "string",
+    "price": float,
+    "description": "string"
+}</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "id": int,
+    "user_id": int,
+    "name": str,
+    "price": float,
+    "description": str,
+    "created_at": str,
+    "image": str | ""
+}</code></pre>
+        </article>
+        <article id="delete-productsintid">
+          <h3>DELETE /products/&lt;int:id&gt;</h3>
+          <p>Deletes a product by ID.</p>
+          <h4>Request</h4>
+          <p><strong>URL:</strong> <code>/products/&lt;int:id&gt;</code></p>
+          <p><strong>Method:</strong> <code>DELETE</code></p>
+          <p><strong>Headers:</strong></p>
+          <pre><code>Authorization: Bearer access_token</code></pre>
+          <h4>Response</h4>
+          <p><strong>Status:</strong> <code>200 OK</code></p>
+          <p><strong>Content-Type:</strong> <code>application/json</code></p>
+          <pre><code>{
+    "message": "Product deleted"
+}</code></pre>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>
